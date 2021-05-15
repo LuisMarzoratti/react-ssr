@@ -27,6 +27,7 @@ export interface Config {
   distDir: string;
   viewsDir: string;
   staticViews: string[];
+  engine: 'jsx' | 'tsx';
   webpack?: (defaultConfig: webpack.Configuration, env: 'development' | 'production') => webpack.Configuration;
 }
 
@@ -35,6 +36,7 @@ const getSsrConfig = (): Config => {
     id: 'default',
     distDir: '.ssr',
     viewsDir: 'views',
+    engine: 'jsx',
     staticViews: [],
   };
   const ssrConfigPath = path.join(cwd, 'ssr.config.js');
@@ -45,9 +47,8 @@ const getSsrConfig = (): Config => {
   }
 };
 
-export const getEngine = (): 'jsx' | 'tsx' => existsSync(path.join(cwd, 'tsconfig.json')) ? 'tsx' : 'jsx';
-
 export const ssrConfig: Config = getSsrConfig();
+export const getEngine = (): 'jsx' | 'tsx' => getSsrConfig().engine || 'jsx';
 
 export const getPages = async (): Promise<string[]> => {
   const possibles = await readdir(path.join(cwd, ssrConfig.viewsDir));
