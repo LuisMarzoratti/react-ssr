@@ -40,11 +40,6 @@ const register = async (app: any): Promise<void> => {
   app.set('views', path.join(process.cwd(), ssrConfig.viewsDir));
   app.set('view engine', engine);
 
-  if (isProd()) {
-    await (await import('./optimize/production')).default(app);
-  } else {
-    await (await import('./optimize/development')).default(app);
-  }
 };
 
 export default register;
