@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import webpack from 'webpack';
 import readdir from 'recursive-readdir';
 
 const cwd: string = process.cwd();
@@ -28,7 +27,6 @@ export interface Config {
   viewsDir: string;
   staticViews: string[];
   engine: 'jsx' | 'tsx';
-  webpack?: (defaultConfig: webpack.Configuration, env: 'development' | 'production') => webpack.Configuration;
 }
 
 const getSsrConfig = (): Config => {
