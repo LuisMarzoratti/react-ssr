@@ -3,7 +3,9 @@ export const convertAttrToString = (attr: any) => {
   const keys = Object.keys(attr);
   for (let i = 0; i < keys.length; i++) {
     const key = keys[i];
-    results.push(` ${key}="${attr[key]}"`);
+    if (key != 'dangerouslySetInnerHTML') {
+      results.push(` ${key}="${attr[key]}"`);
+    } 
   }
   return results.join('');
 };
@@ -22,7 +24,11 @@ export const getHeadHtml = (heads: any[]) => {
       results.push(`<link${convertAttrToString(h.props)}>`);
     }
     if (h.type === 'script') {
-      results.push(`<script${convertAttrToString(h.props)}></script>`);
+      let inner = '';
+      if (h.props.dangerouslySetInnerHTML){
+        inner = h.props.dangerouslySetInnerHTML.__html;
+      }
+      results.push(`<script${convertAttrToString(h.props)}>${inner}</script>`);
     }
   }
   return results.join('');
